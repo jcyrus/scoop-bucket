@@ -28,53 +28,53 @@ jobs:
             exit 1
           fi
 
-            export FILE CLEAN_VERSION
+          export FILE CLEAN_VERSION
 
-            python3 - <<'PY'
-            import hashlib
-            import json
-            import os
-            from urllib.request import urlopen
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from urllib.request import urlopen
 
-            file_path = os.environ["FILE"]
-            version = os.environ["CLEAN_VERSION"]
+          file_path = os.environ["FILE"]
+          version = os.environ["CLEAN_VERSION"]
 
-            with open(file_path, "r", encoding="utf-8") as f:
-              data = json.load(f)
+          with open(file_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
 
-            data["version"] = version
+          data["version"] = version
 
-            arch = data.get("architecture", {}).get("64bit")
-            if not arch:
-              raise SystemExit("No architecture.64bit section found")
+          arch = data.get("architecture", {}).get("64bit")
+          if not arch:
+            raise SystemExit("No architecture.64bit section found")
 
-            template_url = (
-              data.get("autoupdate", {})
-              .get("architecture", {})
-              .get("64bit", {})
-              .get("url")
-            )
-            if template_url:
-              arch["url"] = template_url.replace("$version", version)
+          template_url = (
+            data.get("autoupdate", {})
+            .get("architecture", {})
+            .get("64bit", {})
+            .get("url")
+          )
+          if template_url:
+            arch["url"] = template_url.replace("$version", version)
 
-            url = arch.get("url")
-            if not url:
-              raise SystemExit("No download URL found for architecture.64bit")
+          url = arch.get("url")
+          if not url:
+            raise SystemExit("No download URL found for architecture.64bit")
 
-            print(f"Resolving sha256: {url}")
-            digest = hashlib.sha256()
-            with urlopen(url) as response:
-              while True:
-                chunk = response.read(1024 * 1024)
-                if not chunk:
-                  break
-                digest.update(chunk)
-            arch["hash"] = digest.hexdigest()
+          print(f"Resolving sha256: {url}")
+          digest = hashlib.sha256()
+          with urlopen(url) as response:
+            while True:
+              chunk = response.read(1024 * 1024)
+              if not chunk:
+                break
+              digest.update(chunk)
+          arch["hash"] = digest.hexdigest()
 
-            with open(file_path, "w", encoding="utf-8") as f:
-              json.dump(data, f, indent=2)
-              f.write("\n")
-            PY
+          with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+            f.write("\n")
+          PY
 
           echo "Updated $FILE"
           cat "$FILE"
