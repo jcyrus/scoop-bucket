@@ -1,12 +1,12 @@
 {
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Ephemeral TUI chat client with E2EE and a dumb relay server",
   "homepage": "https://github.com/jcyrus/ghostwire",
   "license": "MIT",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/jcyrus/ghostwire/releases/download/v0.4.1/ghostwire-windows-amd64.exe",
-      "hash": "6b75733f3393ab87793536662e842e1cbc4eb2871ece2564dd32f501a1c4309f",
+      "url": "https://github.com/jcyrus/ghostwire/releases/download/v0.5.0/ghostwire-windows-amd64.exe",
+      "hash": "665d63cc86c2580cde481cadd45be037bccfd4ec51a77af229891d422d6f75e8",
       "bin": [
         [
           "ghostwire-windows-amd64.exe",
